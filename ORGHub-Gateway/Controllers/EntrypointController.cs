@@ -15,10 +15,10 @@ namespace ORGHub_Gateway.Controllers
             _apiFactory = apiFactory;
         }
 
-        [HttpGet(Name = "isAlive")]
-        public bool Get()
+        [HttpGet("isAlive")]
+        public IActionResult Get()
         {
-            return true;
+            return Ok(true);
         }
 
         [HttpPost("request")]
