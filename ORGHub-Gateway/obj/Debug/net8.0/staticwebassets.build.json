@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "HRpKh2QeEiyih8OG8reK6Pgr9RAnM1+DAhXAby/u64s=",
+  "Source": "ORGHub-Gateway",
+  "BasePath": "_content/ORGHub-Gateway",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
