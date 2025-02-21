@@ -34,3 +34,4 @@ C:\PROJETOS\ORGHUB\ORGHub-Gateway\ORGHub-Gateway\obj\Debug\net8.0\refint\ORGHub-
 C:\PROJETOS\ORGHUB\ORGHub-Gateway\ORGHub-Gateway\obj\Debug\net8.0\ORGHub-Gateway.pdb
 C:\PROJETOS\ORGHUB\ORGHub-Gateway\ORGHub-Gateway\obj\Debug\net8.0\ORGHub-Gateway.genruntimeconfig.cache
 C:\PROJETOS\ORGHUB\ORGHub-Gateway\ORGHub-Gateway\obj\Debug\net8.0\ref\ORGHub-Gateway.dll
+C:\PROJETOS\ORGHUB\ORGHub-Gateway\ORGHub-Gateway\obj\Debug\net8.0\ORGHub-Gateway.sourcelink.json

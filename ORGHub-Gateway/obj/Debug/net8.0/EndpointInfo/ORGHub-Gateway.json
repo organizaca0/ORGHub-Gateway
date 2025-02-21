@@ -4,6 +4,57 @@
     "title": "ORGHub-Gateway",
     "version": "1.0"
   },
-  "paths": { },
-  "components": { }
+  "paths": {
+    "/isAlive": {
+      "get": {
+        "tags": [
+          "Entrypoint"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/request": {
+      "post": {
+        "tags": [
+          "Entrypoint"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GatewayRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GatewayRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GatewayRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GatewayRequest": {
+        "type": "object",
+        "additionalProperties": false
+      }
+    }
+  }
 }

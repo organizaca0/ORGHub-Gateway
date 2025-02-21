@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "ContainingType": "ORGHub_Gateway.Controllers.EntrypointController",
+    "Method": "Get",
+    "RelativePath": "isAlive",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ORGHub_Gateway.Controllers.EntrypointController",
+    "Method": "HandleRequest",
+    "RelativePath": "request",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ORGHub_Gateway.Models.GatewayRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
