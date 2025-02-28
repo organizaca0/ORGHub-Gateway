@@ -6,6 +6,8 @@ using ORGHub_Gateway.Models;
 
 namespace ORGHub_Gateway.Controllers
 {
+    [ApiController]
+    [Route("gateway")]
     public class EntrypointController : ControllerBase
     {
         private readonly ApiFactory _apiFactory;
@@ -22,24 +24,19 @@ namespace ORGHub_Gateway.Controllers
         }
 
         [HttpPost("request")]
-        public IActionResult HandleRequest([FromBody] GatewayRequest request)
+        public async Task<IActionResult> HandleRequest([FromBody] GatewayRequest request)
         {
             try
             {
-                var api = _apiFactory.GetApi(request.ProjectName);
+                var api = _apiFactory.GetApi(request.ProjectId);
 
-                var result = api.HandleRequest(request);
+                var result = await api.HandleRequest(request);
                 return Ok(result);
             }
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        private bool IsRoleAllowed(string url, string role)
-        {
-            return true; 
         }
     }
 }
