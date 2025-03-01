@@ -1,4 +1,6 @@
+using MongoDB.Driver;
 using ORGHub_Gateway.Factories;
+using ORGHub_Gateway.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var mongoClient = new MongoClient(builder.Configuration.GetConnectionString("MongoDB"));
+var mongoDatabase = mongoClient.GetDatabase("ORG");
+
+builder.Services.AddSingleton(mongoDatabase.GetCollection<User>("Users"));
 
 var app = builder.Build();
 
