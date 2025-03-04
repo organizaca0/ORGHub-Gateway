@@ -12,7 +12,7 @@ obj/
 # Ignore appsettings files
 ORGHub-Gateway/appsettings.json
 appsettings.*.json
-
+appsettings.json
 # User-specific files
 *.user
 *.suo
