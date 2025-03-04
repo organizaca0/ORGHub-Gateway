@@ -20,5 +20,11 @@ namespace ORGHub_Gateway.Security
 
             return result == PasswordVerificationResult.Success;
         }
+
+        public string Encode(string password)
+        {
+            var dummyUser = new User();
+            return _passwordHasher.HashPassword(dummyUser, password);
+        }
     }
 }

@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 var mongoClient = new MongoClient(builder.Configuration.GetConnectionString("MongoDB"));
 var mongoDatabase = mongoClient.GetDatabase("ORG");
 
-builder.Services.AddSingleton(mongoDatabase.GetCollection<User>("Users"));
+builder.Services.AddSingleton<IMongoDatabase>(mongoDatabase);
 
 #region Repositories
 builder.Services.AddSingleton<UserRepository>();
@@ -19,6 +19,7 @@ builder.Services.AddSingleton<PasswordEncoder>();
 builder.Services.AddSingleton<JwtService>();
 #endregion
 #region Services
+builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<AuthService>();
 #endregion
 #region Factories

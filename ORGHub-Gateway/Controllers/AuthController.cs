@@ -7,6 +7,7 @@ using ORGHub_Gateway.Services;
 
 namespace ORGHub_Gateway.Controllers
 {
+    [Route("auth")]
     public class AuthController : Controller
     {
         private readonly UserService _userService;

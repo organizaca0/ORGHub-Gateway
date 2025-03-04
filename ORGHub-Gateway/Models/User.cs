@@ -48,5 +48,8 @@ namespace ORGHub_Gateway.Models
 
         [BsonElement("attempts")]
         public int Attempts { get; set; } = 0;
+
+        [BsonElement("_class")]
+        public string Class { get; set; } 
     }
 }
