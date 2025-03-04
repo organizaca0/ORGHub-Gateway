@@ -29,12 +29,13 @@ namespace ORGHub_Gateway.Services
                 new Claim(ClaimTypes.Name, user.UserName)
             
             };
-
-            foreach (var role in user.Roles)
+            /*
+             * Irá ser criado um claim personalizado
+            foreach (var role in user.ProjectRoles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-
+            */
             var token = new JwtSecurityToken(
                 issuer: _issuer,
                 audience: _audience,

@@ -26,7 +26,7 @@ namespace ORGHub_Gateway.Models
         public UserStatus Status { get; set; } 
 
         [BsonElement("roles")]
-        public List<string> Roles { get; set; } = new List<string>();
+        public Dictionary<string, List<string>> Roles { get; set; }
 
         [BsonElement("profilePictureUrl")]
         public string ProfilePictureUrl { get; set; }

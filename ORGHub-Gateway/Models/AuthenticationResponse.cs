@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 namespace ORGHub_Gateway.Models
@@ -21,7 +22,7 @@ namespace ORGHub_Gateway.Models
         public string Email { get; set; }
 
         [JsonProperty("roles")]
-        public List<string> Roles { get; set; }
+        public Dictionary<string, List<string>> Roles { get; set; }
 
         [JsonProperty("profilePictureUrl")]
         public string ProfilePictureUrl { get; set; }
