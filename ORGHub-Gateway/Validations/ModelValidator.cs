@@ -6,32 +6,33 @@ namespace ORGHub_Gateway.Validations
     {
         public static string Validate<T>(T model)
         {
-            if (model == null) 
+            if (model == null)
                 throw new ArgumentNullException(nameof(model));
 
             var validationResults = new List<ValidationResult>();
-            var validationContext = new ValidationContext(model, null, null);
+            var validationContext = new ValidationContext(model);
 
             bool isValid = Validator.TryValidateObject(model, validationContext, validationResults, true);
 
-            if (!isValid)
+            foreach (var property in typeof(T).GetProperties())
             {
-                Dictionary<int, string> errors = new Dictionary<int, string>();
-                for (int i = 0; i < validationResults.Count; i++)
+                var value = property.GetValue(model);
+                var isRequired = Attribute.IsDefined(property, typeof(RequiredAttribute));
+
+                if (isRequired && value == null)
                 {
-                    var propertyNames = validationResults[i].MemberNames;
-                    var propertyName = string.Join(", ", propertyNames);
-                    var errorMessage = validationResults[i].ErrorMessage;
-
-                    errors.Add(i, $"{propertyName}: {errorMessage}");
+                    validationResults.Add(new ValidationResult($"{property.Name} is required.", new[] { property.Name }));
                 }
+            }
 
-                string errorString = "Model Validation Error:\n" + string.Join("\n", errors.Select(kvp => $"{kvp.Key}, {kvp.Value}"));
-
-                return errorString;
+            if (validationResults.Count > 0)
+            {
+                var errors = validationResults.Select((result, index) => $"{index}: {string.Join(", ", result.MemberNames)}: {result.ErrorMessage}");
+                return "Model Validation Error:\n" + string.Join("\n", errors);
             }
 
             return null;
         }
+
     }
 }
