@@ -1,15 +1,28 @@
 ﻿using ORGHub_Gateway.Enums;
 using ORGHub_Gateway.Models;
+using ORGHub_Gateway.Repositories;
+using ORGHub_Gateway.Security;
 
 namespace ORGHub_Gateway.Services
 {
     public class AuthService
     {
-        public AuthenticationResponse Authenticate(AuthenticationRequest authenticationRequest)
-        {
-            AuthenticationResponse response =  new AuthenticationResponse();
+        private readonly PasswordEncoder _passwordEncoder;
+        private readonly UserRepository _userRepository;
+        private readonly JwtService _jwtService;
 
-            User user = _userRepository.FindByUserName(authenticationRequest.Username);
+        public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, JwtService jwtService)
+        {
+            _passwordEncoder = passwordEncoder;
+            _userRepository = userRepository;
+            _jwtService = jwtService;
+        }
+
+        public async Task<AuthenticationResponse> Authenticate(AuthenticationRequest authenticationRequest)
+        {
+            AuthenticationResponse response = new AuthenticationResponse();
+
+            User user = await _userRepository.FindByUserNameAsync(authenticationRequest.Username);
             if (user == null)
             {
                 response.Error = "Not found";
@@ -26,7 +39,6 @@ namespace ORGHub_Gateway.Services
                 return null;
             }
 
-            // Generate a JWT token and return the response
             var token = _jwtService.GenerateToken(user);
             return new AuthenticationResponse(user, token);
         }

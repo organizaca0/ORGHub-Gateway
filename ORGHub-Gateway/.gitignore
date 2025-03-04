@@ -1,5 +1,6 @@
 # Build results
 bin/
+.obj/
 obj/
 
 # VS Code directory
@@ -86,9 +87,3 @@ logs/
 # OS-specific files
 .DS_Store
 Thumbs.db
-
-# Ignore all obj folders
-**/obj/
-
-# Ignore all bin folders
-**/bin/

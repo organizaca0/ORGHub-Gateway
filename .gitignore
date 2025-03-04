@@ -1,94 +1,66 @@
-# Build results
+.vs/
+# Ignore build output and user-specific files
 bin/
+**/bin/
+obj/
+**/obj/
 obj/
 
-# VS Code directory
-.vscode/
+# Ignore obj folder under ORGHub-Gateway explicitly
+.ORGHub-Gateway/obj/
+
+# Ignore appsettings files
+ORGHub-Gateway/appsettings.json
+appsettings.*.json
 
 # User-specific files
 *.user
 *.suo
-*.userosscache
-*.sln.docstates
+*.vscode/
 
-# Visual Studio working folder
-.vs/
+# Ignore Rider & VSCode settings
+.idea/
+.vscode/
 
-# DotNet artifacts
-*.dbmdl
-*.dbproj
-*.jfm
+# Ignore package directories
+packages/
+**/packages/
 
-# Auto-generated files
-Generated_Code/
-
-# Backup & temporary files
-*_i.c
-*_p.c
-*_i.h
-*.ilk
-*.meta
-*.obj
-*.pch
+# Ignore build artifacts
+*.dll
+*.exe
 *.pdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tmp
-*.tmp_proj
+*.mdb
+*.ilk
+*.idb
+*.lib
+*.nupkg
+*.snupkg
 *.log
-*.vspscc
-*.vssscc
+*.cache
 
-# Web files
-wwwroot/
+# Ignore publish output
+publish/
+**/publish/
 
-# Resharper files
-_ReSharper*/
-*.DotSettings.user
+# Ignore .NET-generated files
+project.lock.json
+project.assets.json
 
-# NCrunch
-.ncrunchsolution
-*.ncrunchproject
+# Ignore test results
+TestResults/
+**/TestResults/
 
-# SpecFlow
-*.feature.cs
+# Ignore coverage reports
+coverage/
+**/coverage/
 
-# Database files
+# Ignore dependency files
+node_modules/
+**/node_modules/
+
+# Ignore database and local environment files
+*.db
+*.sqlite
 *.mdf
 *.ldf
-
-# Entity Framework Migrations
-Migrations/
-
-# ASP.NET Scaffolding
-ScaffoldingReadMe.txt
-
-# JetBrains Rider
-.idea/
-
-# Docker files
-**/Dockerfile
-**/docker-compose*
-
-# Logs and debug files
-*.log
-logs/
-
-# Environment and config files
-.env
-*.config.local
-*.localsettings.json
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# Ignore all obj folders
-**/obj/
-
-# Ignore all bin folders
-**/bin/

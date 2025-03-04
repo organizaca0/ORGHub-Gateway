@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ORGHub-Gateway")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+855abd94cb5a2f49ef821283a25c40ab2ca977e0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a43735d4001cb2393276738583bae603825b468")]
 [assembly: System.Reflection.AssemblyProductAttribute("ORGHub-Gateway")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ORGHub-Gateway")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

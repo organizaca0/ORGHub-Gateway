@@ -26,9 +26,10 @@ namespace ORGHub_Gateway.Controllers
             if (await _userService.IsLocked(username))
             {
                 await _userService.RefreshLastLogin(username);
-                return StatusCode(403, "Tente novamente mais tarde.");
+                return StatusCode(401, "Tente novamente mais tarde.");
             }
 
+            
             var res = await _authService.Authenticate(authentication);
             if (res != null)
             {

@@ -7,6 +7,7 @@ namespace ORGHub_Gateway.Services
     public class UserService
     {
         private readonly IMongoCollection<User> _userCollection;
+        private TimeSpan LockDuration = TimeSpan.FromMinutes(10);
 
         public UserService(IMongoDatabase database)
         {
@@ -34,12 +35,12 @@ namespace ORGHub_Gateway.Services
             {
                 if (user.Attempts + 1 == 3)
                 {
-                    user.Attempts += 1;
+                    ++user.Attempts;
                     user.LastBlock = DateTime.UtcNow;
                 }
                 else
                 {
-                    user.Attempts += 1;
+                    ++user.Attempts;
                 }
                 await _userCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
             }
@@ -62,10 +63,9 @@ namespace ORGHub_Gateway.Services
 
             if (user.Attempts < 3) return false; 
 
-            var lockDuration = TimeSpan.FromMinutes(10);
             var timeSinceLastBlock = DateTime.UtcNow - user.LastBlock;
 
-            if (timeSinceLastBlock > lockDuration)
+            if (timeSinceLastBlock > LockDuration)
             {
                 await ResetAttempts(username); 
                 return false;
