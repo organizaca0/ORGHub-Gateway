@@ -31,6 +31,7 @@ namespace ORGHub_Gateway.Services
 
             if (user.Status == UserStatus.Inactive || user.Status == UserStatus.Suspended)
             {
+                response.Error = "Usuário desativado.";
                 return null;
             }
 

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using ORGHub_Gateway.Factories;
 using ORGHub_Gateway.Models;
+using ORGHub_Gateway.Validations;
 
 namespace ORGHub_Gateway.Controllers
 {
@@ -26,6 +26,11 @@ namespace ORGHub_Gateway.Controllers
         [HttpPost("request")]
         public async Task<IActionResult> HandleRequest([FromBody] GatewayRequest request)
         {
+            var errors = ModelValidator.Validate(request);
+
+            if (errors != null)
+                return BadRequest(errors);
+
             try
             {
                 var api = _apiFactory.GetApi(request.ProjectId);

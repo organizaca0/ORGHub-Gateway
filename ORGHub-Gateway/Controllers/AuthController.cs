@@ -1,9 +1,7 @@
-﻿using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ORGHub_Gateway.Models;
 using ORGHub_Gateway.Services;
+using ORGHub_Gateway.Validations;
 
 namespace ORGHub_Gateway.Controllers
 {
@@ -20,9 +18,14 @@ namespace ORGHub_Gateway.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] AuthenticationRequest authentication)
+        public async Task<IActionResult> Login([FromBody] AuthenticationRequest authReq)
         {
-            var username = authentication.Username;
+            var errors = ModelValidator.Validate(authReq);
+
+            if (errors != null)
+                return BadRequest(errors);
+
+            var username = authReq.Username;
 
             if (await _userService.IsLocked(username))
             {
@@ -31,7 +34,7 @@ namespace ORGHub_Gateway.Controllers
             }
 
             
-            var res = await _authService.Authenticate(authentication);
+            var res = await _authService.Authenticate(authReq);
             if (res != null)
             {
                 await _userService.RefreshLastLogin(username);

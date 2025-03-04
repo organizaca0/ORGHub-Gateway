@@ -1,4 +1,4 @@
-﻿using MongoDB.Driver;
+﻿using ORGHub_Gateway.Enums;
 using ORGHub_Gateway.Interfaces;
 using ORGHub_Gateway.Models;
 using ORGHub_Gateway.Repositories;
@@ -6,7 +6,7 @@ using ORGHub_Gateway.Security;
 
 namespace ORGHub_Gateway.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly UserRepository _userRepository;
         private readonly PasswordEncoder _passwordEncoder;
@@ -31,6 +31,8 @@ namespace ORGHub_Gateway.Services
             else
             {
                 user.PasswordHash = _passwordEncoder.Encode(user.PasswordHash); 
+                user.Status = UserStatus.Active;
+
                 await _userRepository.AddAsync(user);
                 return true;
             }

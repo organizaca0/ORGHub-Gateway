@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace ORGHub_Gateway.Models
 {

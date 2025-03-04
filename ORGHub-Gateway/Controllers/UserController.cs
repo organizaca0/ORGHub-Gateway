@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using ORGHub_Gateway.Models;
 using ORGHub_Gateway.Services;
+using ORGHub_Gateway.Validations;
 
 namespace ORGHub_Gateway.Controllers
 {
@@ -18,20 +20,18 @@ namespace ORGHub_Gateway.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateUser([FromBody] User user)
         {
-            try
+            var errors = ModelValidator.Validate(user);
+
+            if (errors != null)
+                return BadRequest(errors);
+
+            if (await _userService.CreateUser(user))
             {
-                if (await _userService.CreateUser(user))
-                {
-                    return StatusCode(StatusCodes.Status201Created);
-                }
-                else
-                {
-                    return BadRequest("Usuário já existente");
-                }
+                return StatusCode(StatusCodes.Status201Created);
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Usuário já existente");
             }
         }
     }
