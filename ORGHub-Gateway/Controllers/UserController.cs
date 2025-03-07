@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ORGHub_Gateway.Models;
 using ORGHub_Gateway.Services;
@@ -7,6 +8,7 @@ using ORGHub_Gateway.Validations;
 namespace ORGHub_Gateway.Controllers
 {
     [Route("user")]
+    [Authorize]
     public class UserController : Controller
     {
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ORGHub_Gateway.Factories;
 using ORGHub_Gateway.Models;
@@ -7,6 +8,7 @@ using ORGHub_Gateway.Validations;
 namespace ORGHub_Gateway.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("gateway")]
     public class EntrypointController : ControllerBase
     {
@@ -38,9 +40,9 @@ namespace ORGHub_Gateway.Controllers
                 var result = await api.HandleRequest(request);
                 return Ok(result);
             }
-            catch (ArgumentException ex)
+            catch (HttpRequestException ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("ERRO: Falha ao fazer requisição: " + ex.Message);
             }
         }
     }

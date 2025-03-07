@@ -11,12 +11,14 @@ namespace ORGHub_Gateway.Services
         private readonly string _secretKey;
         private readonly string _issuer;
         private readonly string _audience;
+        private readonly int _expirationInMinutes;
 
         public JwtService(IConfiguration configuration)
         {
             _secretKey = configuration["Jwt:Key"];
             _issuer = configuration["Jwt:Issuer"];
             _audience = configuration["Jwt:Audience"];
+            _expirationInMinutes = int.Parse(configuration["Jwt:ExpirationInMinutes"]);
         }
 
         public string GenerateToken(User user)
@@ -27,20 +29,13 @@ namespace ORGHub_Gateway.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName)
-            
             };
-            /*
-             * Irá ser criado um claim personalizado
-            foreach (var role in user.ProjectRoles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-            */
+
             var token = new JwtSecurityToken(
                 issuer: _issuer,
                 audience: _audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(60), 
+                expires: DateTime.UtcNow.AddMinutes(_expirationInMinutes),
                 signingCredentials: credentials
             );
 
