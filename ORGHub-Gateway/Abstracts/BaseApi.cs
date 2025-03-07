@@ -21,7 +21,7 @@ namespace ORGHub_Gateway.Abstracts
                 throw new ArgumentException("ProjectId, ControllerId, and HttpMethod are required.");
             }
 
-            var urlBuilder = new StringBuilder($"{ProjectAddress}/{req.ProjectId}/{req.ControllerId}");
+            var urlBuilder = new StringBuilder($"{ProjectAddress}/api/{req.ProjectId}/{req.ControllerId}");
 
             if (req.Parameters != null && req.Parameters.Length > 0)
             {
@@ -50,7 +50,7 @@ namespace ORGHub_Gateway.Abstracts
                     httpRequest.Content = jsonContent;
                 }
 
-                var response = await httpClient.SendAsync(httpRequest);
+                HttpResponseMessage response = await httpClient.SendAsync(httpRequest);
 
                 response.EnsureSuccessStatusCode();
 
@@ -84,6 +84,13 @@ namespace ORGHub_Gateway.Abstracts
             {
                 Console.WriteLine($"{keyValue.Key}: {string.Join(", ", keyValue.Value)}");
             }
+        }
+
+        public async Task<bool> ValidateAcess(GatewayRequest req)
+        {
+            // Implementar busca pelos projects que o User tem acesso
+            // validar roles dentro do project, checar se bate com os endpoints que o usuario deseja acessar
+            return true;
         }
     }
 }

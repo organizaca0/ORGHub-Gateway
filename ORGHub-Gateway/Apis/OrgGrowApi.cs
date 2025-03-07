@@ -3,12 +3,12 @@ using ORGHub_Gateway.Enums;
 
 namespace ORGHub_Gateway.Apis
 {
-    public class OrgHubApi : BaseApi
+    public class OrgGrowApi : BaseApi
     {
-        public override string ProjectName => "orghub";
-        public override string ProjectAddress => "localhost:4001";
+        public override string ProjectName => "orgrow";
+        public override string ProjectAddress => "http://localhost:4001";
 
-        public OrgHubApi()
+        public OrgGrowApi()
         {
             AddEndpointRoles("/api/auth/login", [Role.None]);
 

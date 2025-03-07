@@ -25,7 +25,7 @@ namespace ORGHub_Gateway.Controllers
             return Ok(true);
         }
 
-        [HttpPost("request")]
+        [HttpPost("proxy")]
         public async Task<IActionResult> HandleRequest([FromBody] GatewayRequest request)
         {
             var errors = ModelValidator.Validate(request);
@@ -36,13 +36,17 @@ namespace ORGHub_Gateway.Controllers
             try
             {
                 var api = _apiFactory.GetApi(request.ProjectId);
+                bool hasAcess = await api.ValidateAcess(request);
+
+                if(!hasAcess)
+                    return BadRequest();
 
                 var result = await api.HandleRequest(request);
                 return Ok(result);
             }
             catch (HttpRequestException ex)
-            {
-                return BadRequest("ERRO: Falha ao fazer requisição: " + ex.Message);
+            { 
+                return BadRequest("ERROR: " + ex.Message);
             }
         }
     }

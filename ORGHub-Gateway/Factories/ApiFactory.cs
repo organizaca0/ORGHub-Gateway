@@ -12,7 +12,7 @@ namespace ORGHub_Gateway.Factories
         {
             _apiCreators = new Dictionary<string, Func<BaseApi>>
         {
-            { "orghub", () => new OrgHubApi() }
+            { "orgrow", () => new OrgGrowApi() }
         };
 
             _apiInstances = new Dictionary<string, BaseApi>();
