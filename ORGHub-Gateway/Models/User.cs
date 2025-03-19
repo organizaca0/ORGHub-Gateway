@@ -36,7 +36,7 @@ namespace ORGHub_Gateway.Models
 
         [BsonElement("roles")]
         [Required(ErrorMessage = "Roles are required.")]
-        public Dictionary<string, List<string>> Roles { get; set; }
+        public Dictionary<string, List<Role>> Roles { get; set; }
 
         [BsonElement("profilePictureUrl")]
         public string ProfilePictureUrl { get; set; }

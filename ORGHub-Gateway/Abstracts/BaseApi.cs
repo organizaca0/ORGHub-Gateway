@@ -15,12 +15,6 @@ namespace ORGHub_Gateway.Abstracts
 
         public async Task<string> HandleRequest(GatewayRequest req)
         {
-            // TODO separar pra um metodo separado que so trata isso "TreatRequestErrors(req)"
-            if (string.IsNullOrEmpty(req.ProjectId) || string.IsNullOrEmpty(req.ControllerId) || req.HttpMethod == null)
-            {
-                throw new ArgumentException("ProjectId, ControllerId, and HttpMethod are required.");
-            }
-
             var urlBuilder = new StringBuilder($"{ProjectAddress}/api/{req.ProjectId}/{req.ControllerId}");
 
             if (req.Parameters != null && req.Parameters.Length > 0)
@@ -77,17 +71,18 @@ namespace ORGHub_Gateway.Abstracts
             return false;
         }
 
-        public void PrintEndpointRole()
+        public bool ValidateAcess(GatewayRequest req)
         {
-            Console.WriteLine($"Endpoint-Role Mappings for {ProjectName} ({ProjectAddress}):");
-            foreach (var keyValue in EndpointRole)
-            {
-                Console.WriteLine($"{keyValue.Key}: {string.Join(", ", keyValue.Value)}");
-            }
-        }
+            User user = null;
 
-        public async Task<bool> ValidateAcess(GatewayRequest req)
-        {
+            if (!user.Roles.ContainsKey(req.ProjectId))
+                return false;
+            //if(!user.Roles.TryGetValue(req.ProjectId).)
+            /*
+             * De alguma forma pegar o user do contexto, provavelmente do [Authorize] ou algo do tipo
+             * if(user.Roles,
+             * 
+            */
             // Implementar busca pelos projects que o User tem acesso
             // validar roles dentro do project, checar se bate com os endpoints que o usuario deseja acessar
             return true;
