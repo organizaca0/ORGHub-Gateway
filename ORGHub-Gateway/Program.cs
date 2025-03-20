@@ -25,6 +25,7 @@ builder.Services.AddSingleton<JwtService>();
 #region Services
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<AuthService>();
+builder.Services.AddHttpContextAccessor(); 
 #endregion
 #region Factories
 builder.Services.AddSingleton<ApiFactory>();
