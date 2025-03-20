@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
 using Newtonsoft.Json;
 using ORGHub_Gateway.Enums;
 using ORGHub_Gateway.Models;
+using ORGHub_Gateway.Services;
 
 namespace ORGHub_Gateway.Abstracts
 {
@@ -10,9 +12,17 @@ namespace ORGHub_Gateway.Abstracts
         public abstract string ProjectName { get; }
         public abstract string ProjectAddress { get; }
 
-        protected Dictionary<string, List<Role>> EndpointRole { get; } = new Dictionary<string, List<Role>>();
+        private readonly UserService _userService;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
+        protected Dictionary<string, List<Role>> EndpointRoles { get; } = new Dictionary<string, List<Role>>();
+
+        public BaseApi(UserService userService, IHttpContextAccessor httpContextAccessor) 
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _userService = userService;
+        }
         public async Task<string> HandleRequest(GatewayRequest req)
         {
             var urlBuilder = new StringBuilder($"{ProjectAddress}/api/{req.ProjectId}/{req.ControllerId}");
@@ -55,37 +65,34 @@ namespace ORGHub_Gateway.Abstracts
 
         protected void AddEndpointRoles(string endpoint, List<Role> Role)
         {
-            if (!EndpointRole.ContainsKey(endpoint))
+            if (!EndpointRoles.ContainsKey(endpoint))
             {
-                EndpointRole[endpoint] = new List<Role>();
+                EndpointRoles[endpoint] = new List<Role>();
             }
-            EndpointRole[endpoint].AddRange(Role);
+            EndpointRoles[endpoint].AddRange(Role);
         }
 
-        public bool IsRoleAllowed(string endpoint, Role role)
+        public bool IsRoleAllowed(string endpoint, List<Role> roles)
         {
-            if (EndpointRole.TryGetValue(endpoint, out var allowedRole))
-            {
-                return allowedRole.Contains(role);
-            }
-            return false;
+            return EndpointRoles.TryGetValue(endpoint, out var allowedRole) &&
+                   roles.Any(role => allowedRole.Contains(role));
         }
 
-        public bool ValidateAcess(GatewayRequest req)
+        public async Task<bool> ValidateAccess(GatewayRequest req)
         {
-            User user = null;
+            var user = _httpContextAccessor.HttpContext?.User;
 
-            if (!user.Roles.ContainsKey(req.ProjectId))
-                return false;
-            //if(!user.Roles.TryGetValue(req.ProjectId).)
-            /*
-             * De alguma forma pegar o user do contexto, provavelmente do [Authorize] ou algo do tipo
-             * if(user.Roles,
-             * 
-            */
-            // Implementar busca pelos projects que o User tem acesso
-            // validar roles dentro do project, checar se bate com os endpoints que o usuario deseja acessar
-            return true;
+            if (user == null)
+                return false; 
+
+            var username = user.FindFirst(ClaimTypes.Name)?.Value; 
+            if (username == null)
+                return false; 
+
+            User foundUser = await _userService.GetUserByUsername(username);
+            List<Role> userRoles = foundUser.GetRolesForProject(req.ProjectId);
+
+            return IsRoleAllowed(req.Parameters.ToString(), userRoles);
         }
     }
 }

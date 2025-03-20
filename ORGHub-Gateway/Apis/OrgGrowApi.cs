@@ -1,5 +1,7 @@
 ﻿using ORGHub_Gateway.Abstracts;
 using ORGHub_Gateway.Enums;
+using ORGHub_Gateway.Interfaces;
+using ORGHub_Gateway.Services;
 
 namespace ORGHub_Gateway.Apis
 {
@@ -8,26 +10,28 @@ namespace ORGHub_Gateway.Apis
         public override string ProjectName => "orgrow";
         public override string ProjectAddress => "http://localhost:4001";
 
-        public OrgGrowApi()
+        private readonly UserService _userService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public OrgGrowApi(UserService userService, IHttpContextAccessor httpContextAccessor)
+            : base(userService, httpContextAccessor)
         {
-            AddEndpointRoles("/api/auth/login", [Role.None]);
+            _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
 
-            AddEndpointRoles("/api/orgrow/create", [Role.Admin]);
-            AddEndpointRoles("/api/grow/delete/**", [Role.Admin]);
-            AddEndpointRoles("/api/grow/change-status/**", [Role.Admin]);
-            AddEndpointRoles("/api/secret/**", [Role.Admin]);
-            AddEndpointRoles("/api/user/**", [Role.Admin]);
-            AddEndpointRoles("/api/grow/create", [Role.Admin]);
+            AddEndpointRoles("/grow/create", [Role.Admin]);
+            AddEndpointRoles("/grow/delete", [Role.Admin]);
+            AddEndpointRoles("/grow/change-status", [Role.Admin]);
+            AddEndpointRoles("/grow/grow", [Role.User]);
+            AddEndpointRoles("/grow/grows", [Role.User]);
+            AddEndpointRoles("/grow/update", [Role.User]);
 
-            AddEndpointRoles("/api/enviroment/send-data", [Role.None]);
-            AddEndpointRoles("/api/enviroment/setup", [Role.None]);
-            AddEndpointRoles("/api/enviroment/get-data/stream", [Role.None]);
+            AddEndpointRoles("/enviroment/send-data", [Role.None]);
+            AddEndpointRoles("/enviroment/setup", [Role.None]);
+            AddEndpointRoles("/enviroment/get-data/stream", [Role.None]);
+            AddEndpointRoles("/enviroment/get-setup", [Role.User]);
+            AddEndpointRoles("/enviroment", [Role.User]);
 
-            AddEndpointRoles("/api/enviroment/get-setup", [Role.User]);
-            AddEndpointRoles("/api/enviroment", [Role.User]);
-            AddEndpointRoles("/api/grow/grow", [Role.User]);
-            AddEndpointRoles("/api/grow/grows", [Role.User]);
-            AddEndpointRoles("/api/grow/update/**", [Role.User]);
+            AddEndpointRoles("/secret", [Role.Admin]);
         }
     }
 }

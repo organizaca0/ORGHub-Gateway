@@ -1,5 +1,6 @@
 ﻿using ORGHub_Gateway.Abstracts;
 using ORGHub_Gateway.Apis;
+using ORGHub_Gateway.Services;
 
 namespace ORGHub_Gateway.Factories
 {
@@ -8,11 +9,16 @@ namespace ORGHub_Gateway.Factories
         private readonly Dictionary<string, Func<BaseApi>> _apiCreators;
         private readonly Dictionary<string, BaseApi> _apiInstances;
 
-        public ApiFactory()
+        private readonly UserService _userService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public ApiFactory(UserService userService, IHttpContextAccessor httpContextAccessor)
         {
+            _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
+
             _apiCreators = new Dictionary<string, Func<BaseApi>>
         {
-            { "orgrow", () => new OrgGrowApi() }
+            { "orgrow", () => new OrgGrowApi(_userService, _httpContextAccessor) }
         };
 
             _apiInstances = new Dictionary<string, BaseApi>();
@@ -28,7 +34,7 @@ namespace ORGHub_Gateway.Factories
             if (_apiCreators.TryGetValue(projectId, out var apiCreator))
             {
                 var newInstance = apiCreator();
-                _apiInstances[projectId] = newInstance; 
+                _apiInstances[projectId] = newInstance;
                 return newInstance;
             }
 

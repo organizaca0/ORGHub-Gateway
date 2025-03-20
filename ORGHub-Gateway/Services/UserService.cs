@@ -20,6 +20,20 @@ namespace ORGHub_Gateway.Services
             _passwordEncoder = passwordEncoder;
         }
 
+        public async Task<User> GetUserByUsername(string username)
+        {
+            var existingUser = await _userRepository.FindByUserNameAsync(username);
+
+            if (existingUser != null)
+            {
+                return existingUser;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task<bool> CreateUser(User user)
         {
             var existingUser = await _userRepository.FindByUserNameAsync(user.UserName);

@@ -36,7 +36,7 @@ namespace ORGHub_Gateway.Controllers
             try
             {
                 var api = _apiFactory.GetApi(request.ProjectId);
-                bool hasAcess = api.ValidateAcess(request);
+                bool hasAcess = await api.ValidateAccess(request);
 
                 if(!hasAcess)
                     return BadRequest();
