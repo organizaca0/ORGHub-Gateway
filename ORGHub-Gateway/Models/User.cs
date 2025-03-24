@@ -36,7 +36,7 @@ namespace ORGHub_Gateway.Models
 
         [BsonElement("roles")]
         [Required(ErrorMessage = "Roles are required.")]
-        public Dictionary<string, List<Role>> Roles { get; set; }
+        public Dictionary<string, List<string>> Roles { get; set; }
 
         [BsonElement("profilePictureUrl")]
         public string ProfilePictureUrl { get; set; }
@@ -59,18 +59,9 @@ namespace ORGHub_Gateway.Models
 
         [BsonElement("attempts")]
         public int Attempts { get; set; } = 0;
-
-        public bool HasAccessToProject(string project)
+        public List<string> GetEndpointsForProject(string project)
         {
-            if (GetRolesForProject(project).Count == 0)
-                return false;
-            return true;
-        }
-        public List<Role> GetRolesForProject(string project)
-        {
-            if (HasAccessToProject(project))
-                return this.Roles.GetValueOrDefault(project);
-            return null;
+            return this.Roles.GetValueOrDefault(project);
         }
 
     }

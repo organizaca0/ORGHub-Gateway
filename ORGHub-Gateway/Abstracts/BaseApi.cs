@@ -16,7 +16,7 @@ namespace ORGHub_Gateway.Abstracts
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        protected Dictionary<string, List<Role>> EndpointRoles { get; } = new Dictionary<string, List<Role>>();
+        protected List<string> Endpoints { get; } = new List<string>();
 
         public BaseApi(UserService userService, IHttpContextAccessor httpContextAccessor) 
         {
@@ -27,7 +27,7 @@ namespace ORGHub_Gateway.Abstracts
         {
             var urlBuilder = new StringBuilder($"{ProjectAddress}/api/{req.ProjectId}/{req.ControllerId}");
 
-            if (req.Parameters != null && req.Parameters.Length > 0)
+            if (req.Parameters != null && req.Parameters.Count > 0)
             {
                 foreach (var param in req.Parameters)
                 {
@@ -63,25 +63,19 @@ namespace ORGHub_Gateway.Abstracts
             }
         }
 
-        protected void AddEndpointRoles(string endpoint, List<Role> Role)
+        protected void AddEndpointRoles(string endpoint)
         {
-            if (!EndpointRoles.ContainsKey(endpoint))
+            if (!(this.Endpoints.Contains(endpoint)))
             {
-                EndpointRoles[endpoint] = new List<Role>();
+                this.Endpoints.Add(endpoint);
             }
-            EndpointRoles[endpoint].AddRange(Role);
-        }
-
-        public bool IsRoleAllowed(string endpoint, List<Role> roles)
-        {
-            return EndpointRoles.TryGetValue(endpoint, out var allowedRole) &&
-                   roles.Any(role => allowedRole.Contains(role));
         }
 
         public async Task<bool> ValidateAccess(GatewayRequest req)
         {
-            var user = _httpContextAccessor.HttpContext?.User;
+            string pars = req.ControllerId;
 
+            var user = _httpContextAccessor.HttpContext?.User;
             if (user == null)
                 return false; 
 
@@ -90,9 +84,13 @@ namespace ORGHub_Gateway.Abstracts
                 return false; 
 
             User foundUser = await _userService.GetUserByUsername(username);
-            List<Role> userRoles = foundUser.GetRolesForProject(req.ProjectId);
+            List<string> allowedEndpoints = foundUser.GetEndpointsForProject(req.ProjectId);
 
-            return IsRoleAllowed(req.Parameters.ToString(), userRoles);
+            foreach(var par in req.Parameters)
+            {
+                pars += "/" + par.ToString();
+            }
+            return allowedEndpoints.Contains(pars);
         }
     }
 }

@@ -39,8 +39,8 @@ namespace ORGHub_Gateway.Controllers
                 bool hasAcess = await api.ValidateAccess(request);
 
                 if(!hasAcess)
-                    return BadRequest();
-
+                    return Unauthorized();
+               
                 var result = await api.HandleRequest(request);
                 return Ok(result);
             }

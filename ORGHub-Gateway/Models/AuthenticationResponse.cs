@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ORGHub_Gateway.Enums;
 
 namespace ORGHub_Gateway.Models
 {

@@ -1,4 +1,5 @@
-﻿using ORGHub_Gateway.Abstracts;
+﻿using System.Security.Claims;
+using ORGHub_Gateway.Abstracts;
 using ORGHub_Gateway.Enums;
 using ORGHub_Gateway.Interfaces;
 using ORGHub_Gateway.Services;
@@ -17,21 +18,23 @@ namespace ORGHub_Gateway.Apis
         {
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
+            var user = _httpContextAccessor.HttpContext?.User;
+            var username = user.FindFirst(ClaimTypes.Name)?.Value;
 
-            AddEndpointRoles("/grow/create", [Role.Admin]);
-            AddEndpointRoles("/grow/delete", [Role.Admin]);
-            AddEndpointRoles("/grow/change-status", [Role.Admin]);
-            AddEndpointRoles("/grow/grow", [Role.User]);
-            AddEndpointRoles("/grow/grows", [Role.User]);
-            AddEndpointRoles("/grow/update", [Role.User]);
+            AddEndpointRoles("grow/create");
+            AddEndpointRoles("grow/delete");
+            AddEndpointRoles("grow/change-status");
+            AddEndpointRoles("grow/grow");
+            AddEndpointRoles($"grow/all/{username}");
+            AddEndpointRoles("grow/update");
 
-            AddEndpointRoles("/enviroment/send-data", [Role.None]);
-            AddEndpointRoles("/enviroment/setup", [Role.None]);
-            AddEndpointRoles("/enviroment/get-data/stream", [Role.None]);
-            AddEndpointRoles("/enviroment/get-setup", [Role.User]);
-            AddEndpointRoles("/enviroment", [Role.User]);
+            AddEndpointRoles("enviroment/send-data");
+            AddEndpointRoles("enviroment/setup");
+            AddEndpointRoles("enviroment/get-data/stream");
+            AddEndpointRoles("enviroment/get-setup");
+            AddEndpointRoles("enviroment");
 
-            AddEndpointRoles("/secret", [Role.Admin]);
+            AddEndpointRoles("secret");
         }
     }
 }

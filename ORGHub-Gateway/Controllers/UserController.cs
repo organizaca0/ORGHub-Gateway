@@ -7,7 +7,7 @@ using ORGHub_Gateway.Validations;
 namespace ORGHub_Gateway.Controllers
 {
     [Route("user")]
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
 
