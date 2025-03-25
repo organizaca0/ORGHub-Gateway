@@ -32,12 +32,13 @@ namespace ORGHub_Gateway.Services
             if (user.Status == UserStatus.Inactive || user.Status == UserStatus.Suspended)
             {
                 response.Error = "Usuário desativado.";
-                return null;
+                return response;
             }
 
             if (!_passwordEncoder.Verify(authenticationRequest.Password, user.PasswordHash))
             {
-                return null;
+                response.Error = "Usuário ou senha incorretos.";
+                return response;
             }
 
             var token = _jwtService.GenerateToken(user);

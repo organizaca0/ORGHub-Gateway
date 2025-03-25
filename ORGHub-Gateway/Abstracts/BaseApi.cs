@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using ORGHub_Gateway.Enums;
 using ORGHub_Gateway.Models;
@@ -77,13 +78,15 @@ namespace ORGHub_Gateway.Abstracts
 
             var user = _httpContextAccessor.HttpContext?.User;
             if (user == null)
+                return false;
+
+            var abc = user.FindFirst(ClaimTypes.SerialNumber)?.Value;
+
+            ObjectId userId = ObjectId.Parse(user.FindFirst(ClaimTypes.SerialNumber)?.Value); 
+            if (userId == null)
                 return false; 
 
-            var username = user.FindFirst(ClaimTypes.Name)?.Value; 
-            if (username == null)
-                return false; 
-
-            User foundUser = await _userService.GetUserByUsername(username);
+            User foundUser = await _userService.GetUserById(userId);
             List<string> allowedEndpoints = foundUser.GetEndpointsForProject(req.ProjectId);
 
             foreach(var par in req.Parameters)

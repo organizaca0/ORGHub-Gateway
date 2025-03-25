@@ -7,9 +7,9 @@ namespace ORGHub_Gateway.Models
 {
     public class User
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        [BsonId] 
+        [BsonRepresentation(BsonType.ObjectId)] 
+        public ObjectId Id { get; set; }
 
         [BsonElement("userName")]
         [Required(ErrorMessage = "Username is required.")]

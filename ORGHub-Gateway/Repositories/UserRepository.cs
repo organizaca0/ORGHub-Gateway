@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using ORGHub_Gateway.Models;
 
 namespace ORGHub_Gateway.Repositories
@@ -12,7 +13,7 @@ namespace ORGHub_Gateway.Repositories
             _usersCollection = database.GetCollection<User>("Users");
         }
 
-        public async Task<User> FindByIdAsync(string id)
+        public async Task<User> FindByIdAsync(ObjectId id)
         {
             return await _usersCollection.Find(u => u.Id == id).FirstOrDefaultAsync();
         }
@@ -32,7 +33,7 @@ namespace ORGHub_Gateway.Repositories
             await _usersCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(ObjectId id)
         {
             await _usersCollection.DeleteOneAsync(u => u.Id == id);
         }

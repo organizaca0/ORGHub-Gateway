@@ -19,13 +19,13 @@ namespace ORGHub_Gateway.Apis
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
             var user = _httpContextAccessor.HttpContext?.User;
-            var username = user.FindFirst(ClaimTypes.Name)?.Value;
+            var userId = user.FindFirst(ClaimTypes.SerialNumber)?.Value;
 
             AddEndpointRoles("grow/create");
             AddEndpointRoles("grow/delete");
             AddEndpointRoles("grow/change-status");
             AddEndpointRoles("grow/grow");
-            AddEndpointRoles($"grow/all/{username}");
+            AddEndpointRoles($"grow/all/{userId}");
             AddEndpointRoles("grow/update");
 
             AddEndpointRoles("enviroment/send-data");

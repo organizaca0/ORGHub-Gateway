@@ -1,4 +1,5 @@
-﻿using ORGHub_Gateway.Enums;
+﻿using MongoDB.Bson;
+using ORGHub_Gateway.Enums;
 using ORGHub_Gateway.Interfaces;
 using ORGHub_Gateway.Models;
 using ORGHub_Gateway.Repositories;
@@ -18,6 +19,20 @@ namespace ORGHub_Gateway.Services
         {
             _userRepository = userRepository;
             _passwordEncoder = passwordEncoder;
+        }
+
+        public async Task<User> GetUserById(ObjectId id)
+        {
+            User existingUser = await _userRepository.FindByIdAsync(id);
+
+            if (existingUser != null)
+            {
+                return existingUser;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<User> GetUserByUsername(string username)

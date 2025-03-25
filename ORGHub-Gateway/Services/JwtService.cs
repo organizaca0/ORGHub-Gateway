@@ -26,9 +26,11 @@ namespace ORGHub_Gateway.Services
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+            string abc = user.Id.ToString();
+
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.SerialNumber, user.Id.ToString())
             };
 
             var token = new JwtSecurityToken(
