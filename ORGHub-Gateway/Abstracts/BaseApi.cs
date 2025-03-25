@@ -44,23 +44,20 @@ namespace ORGHub_Gateway.Abstracts
             }
 
             string url = urlBuilder.ToString();
-
             using (var httpClient = new HttpClient())
             {
-                var httpRequest = new HttpRequestMessage(req.HttpMethod, url);
+                var httpRequest = new HttpRequestMessage(req.GetHttpMethod(), url);
 
-                if (req.Body != null)
+                if (req.Body != null && req.SupportsBody())
                 {
                     var jsonContent = new StringContent(JsonConvert.SerializeObject(req.Body), Encoding.UTF8, "application/json");
                     httpRequest.Content = jsonContent;
                 }
 
                 HttpResponseMessage response = await httpClient.SendAsync(httpRequest);
-
                 response.EnsureSuccessStatusCode();
 
-                var responseBody = await response.Content.ReadAsStringAsync();
-                return responseBody;
+                return await response.Content.ReadAsStringAsync();
             }
         }
 
@@ -79,8 +76,6 @@ namespace ORGHub_Gateway.Abstracts
             var user = _httpContextAccessor.HttpContext?.User;
             if (user == null)
                 return false;
-
-            var abc = user.FindFirst(ClaimTypes.SerialNumber)?.Value;
 
             ObjectId userId = ObjectId.Parse(user.FindFirst(ClaimTypes.SerialNumber)?.Value); 
             if (userId == null)
