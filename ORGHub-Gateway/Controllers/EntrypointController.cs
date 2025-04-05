@@ -41,8 +41,7 @@ namespace ORGHub_Gateway.Controllers
                 if(!hasAcess)
                     return Unauthorized();
                
-                var result = await api.HandleRequest(request);
-                return Ok(result);
+                return await api.HandleRequest(request);
             }
             catch (HttpRequestException ex)
             { 

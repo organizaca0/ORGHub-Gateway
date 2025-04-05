@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using Newtonsoft.Json;
 using ORGHub_Gateway.Enums;
@@ -24,7 +25,7 @@ namespace ORGHub_Gateway.Abstracts
             _httpContextAccessor = httpContextAccessor;
             _userService = userService;
         }
-        public async Task<string> HandleRequest(GatewayRequest req)
+        public async Task<ObjectResult> HandleRequest(GatewayRequest req)
         {
             var urlBuilder = new StringBuilder($"{ProjectAddress}/api/{req.ProjectId}/{req.ControllerId}");
 
@@ -57,7 +58,12 @@ namespace ORGHub_Gateway.Abstracts
                 HttpResponseMessage response = await httpClient.SendAsync(httpRequest);
                 response.EnsureSuccessStatusCode();
 
-                return await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
+                var result = new ObjectResult(content)
+                {
+                    StatusCode = (int?)response.StatusCode
+                };
+                return result;
             }
         }
 
