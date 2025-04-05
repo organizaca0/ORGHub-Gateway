@@ -50,7 +50,7 @@ namespace ORGHub_Gateway.Abstracts
 
                 if (req.Body != null && req.SupportsBody())
                 {
-                    var jsonContent = new StringContent(JsonConvert.SerializeObject(req.Body), Encoding.UTF8, "application/json");
+                    var jsonContent = new StringContent(req.Body, Encoding.UTF8, "application/json");
                     httpRequest.Content = jsonContent;
                 }
 
